@@ -3,7 +3,6 @@ package com.fiap.digidine.model;
 import com.fiap.digidine.dto.CustomerRequestDTO;
 import com.fiap.digidine.dto.ProductRequestDTO;
 import com.fiap.digidine.model.enums.OrderStatus;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,7 +25,7 @@ public class Order {
     private CustomerRequestDTO customer;
     private List<ProductRequestDTO> products;
     private double totalPrice;
-    private OrderStatus orderStatus;
+    private OrderStatus status;
     private LocalDateTime createdAt;
 
 }

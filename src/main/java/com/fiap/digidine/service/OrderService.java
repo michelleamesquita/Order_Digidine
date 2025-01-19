@@ -5,6 +5,7 @@ import com.fiap.digidine.dto.OrderResponseDTO;
 import com.fiap.digidine.model.enums.OrderStatus;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderService {
 
@@ -12,7 +13,7 @@ public interface OrderService {
     OrderResponseDTO updateOrderStatusByOrderNumber(long orderNumber, OrderStatus status);
     OrderResponseDTO updateOrderByOrderNumber(long orderNumber, OrderRequestDTO orderRequestDTO);
     List<OrderResponseDTO> listOrders();
-    OrderStatus getOrderStatus(long orderNumber);
+    String getOrderStatus(long orderNumber);
     void delete(Long orderNumber);
     OrderResponseDTO getByOrderNumber(Long orderNumber);
 }

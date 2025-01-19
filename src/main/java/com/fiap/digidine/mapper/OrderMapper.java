@@ -2,10 +2,12 @@ package com.fiap.digidine.mapper;
 
 import com.fiap.digidine.dto.OrderResponseDTO;
 import com.fiap.digidine.model.Order;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class OrderMapper {
 
     public OrderResponseDTO toOrderResponse(Order order)
@@ -15,7 +17,7 @@ public class OrderMapper {
                 order.getCustomer(),
                 order.getProducts(),
                 order.getTotalPrice(),
-                order.getOrderStatus().toString(),
+                order.getStatus().toString(),
                 order.getCreatedAt());
     }
 
@@ -29,7 +31,7 @@ public class OrderMapper {
                     order.getCustomer(),
                     order.getProducts(),
                     order.getTotalPrice(),
-                    order.getOrderStatus().toString(),
+                    order.getStatus().toString(),
                     order.getCreatedAt());
 
             ordersResponseDTO.add(orderResponseDTO);
