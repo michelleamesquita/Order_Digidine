@@ -19,10 +19,10 @@ jobs:
         java-version: '21'
         distribution: 'temurin'
 
-    - name: Set up Maven
-      uses: s4u/maven-settings-action@v2
-      with:
-        maven-version: '3.9.4'
+    # - name: Set up Maven
+    #   uses: s4u/maven-settings-action@v2
+    #   with:
+    #     maven-version: '3.9.4'
 
     - name: Verify Java version
       run: java -version
