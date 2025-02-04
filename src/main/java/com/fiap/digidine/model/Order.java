@@ -3,9 +3,7 @@ package com.fiap.digidine.model;
 import com.fiap.digidine.dto.CustomerRequestDTO;
 import com.fiap.digidine.dto.ProductRequestDTO;
 import com.fiap.digidine.model.enums.OrderStatus;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
@@ -15,7 +13,9 @@ import java.util.UUID;
 
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor(force = true)
+@AllArgsConstructor
 @Document(collection = "orders")
 public class Order {
 

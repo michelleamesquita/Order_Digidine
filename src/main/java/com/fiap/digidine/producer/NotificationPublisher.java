@@ -13,10 +13,10 @@ public class NotificationPublisher {
     private RabbitTemplate rabbitTemplate;
 
     @Value(value = "${digidine.broker.exchange.orderNotificationExchange}")
-    private String orderNotificationExchange;
+    public String orderNotificationExchange;
 
     @Value(value = "${digidine.broker.key.orderNotificationKey}")
-    private String orderNotificationKey;
+    public String orderNotificationKey;
 
     public void publishNotificationCommand(NotificationDTO notificationDTO) {
         rabbitTemplate.convertAndSend(orderNotificationExchange, orderNotificationKey, notificationDTO);

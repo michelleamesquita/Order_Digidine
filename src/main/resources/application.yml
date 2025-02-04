@@ -12,10 +12,10 @@ spring:
 
   rabbitmq:
     host: localhost
-    port: 5672
-    username: myuser
-    password: secret
-
+#    port: 5672
+#    username: myuser
+#    password: secret
+#
 digidine:
   broker:
     exchange:

@@ -1,0 +1,9 @@
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/testdb
+      authentication-database: testdb # Remove credenciais para testes
+  mongodb:
+    embedded:
+      version: 5.0.0
+      features: sync_delay
