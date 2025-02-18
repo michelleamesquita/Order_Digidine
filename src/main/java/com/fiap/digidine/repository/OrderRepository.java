@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @EnableMongoRepositories
-public interface OrderRepository extends MongoRepository<Order, UUID> {
+public interface OrderRepository extends MongoRepository<Order, Long> {
 
     List<Order> findByStatusNotOrderByStatusAscCreatedAtAsc(String status);
 

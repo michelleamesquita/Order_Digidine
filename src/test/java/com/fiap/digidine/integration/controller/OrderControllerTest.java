@@ -6,17 +6,16 @@ import com.fiap.digidine.dto.OrderRequestDTO;
 import com.fiap.digidine.dto.OrderResponseDTO;
 import com.fiap.digidine.dto.ProductRequestDTO;
 import com.fiap.digidine.dto.enums.ProductCategory;
-import com.fiap.digidine.model.enums.OrderStatus;
 import com.fiap.digidine.service.OrderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -113,17 +112,6 @@ class OrderControllerTest {
     }
 
     @Test
-    void updateOrderStatus_WithValidStatus_ReturnsUpdatedStatus() {
-        OrderStatus newStatus = OrderStatus.EM_PREPARACAO;
-        when(orderService.updateOrderStatusByOrderNumber(validOrderNumber, newStatus)).thenReturn(sampleResponse);
-
-        ResponseEntity<Object> response = orderController.updateOrderStatusByOrderNumber(validOrderNumber, newStatus);
-
-        assertEquals(HttpStatus.OK, response.getStatusCode());
-        assertEquals(sampleResponse, response.getBody());
-    }
-
-    @Test
     void listOrders_WhenOrdersExist_ReturnsOrderList() {
         List<OrderResponseDTO> orders = Arrays.asList(sampleResponse, sampleResponse);
         when(orderService.listOrders()).thenReturn(orders);
@@ -138,10 +126,34 @@ class OrderControllerTest {
     void getOrderById_WithValidOrderNumber_ReturnsOrder() {
         when(orderService.getByOrderNumber(validOrderNumber)).thenReturn(sampleResponse);
 
-        ResponseEntity<Object> response = orderController.getOrderById(validOrderNumber);
+        ResponseEntity<Object> response = orderController.getOrderByOrderNumber(validOrderNumber);
 
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(sampleResponse, response.getBody());
+    }
+
+    @Test
+    void getOrderById_WithInvalidOrderNumber_ReturnsOrder() {
+        String errorMessage = "Pedido não encontrado";
+        when(orderService.getByOrderNumber(invalidOrderNumber))
+                .thenThrow(new IllegalArgumentException(errorMessage));
+
+        ResponseEntity<Object> response = orderController.getOrderByOrderNumber(invalidOrderNumber);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("Erro: " + errorMessage, response.getBody());
+    }
+
+    @Test
+    void getOrderStatus_WithInvalidOrderNumber_ReturnsNotFound() {
+        String errorMessage = "Pedido não encontrado";
+        when(orderService.getOrderStatus(invalidOrderNumber))
+                .thenThrow(new IllegalArgumentException(errorMessage));
+
+        ResponseEntity<String> response = orderController.getOrderStatusByOrderNumber(invalidOrderNumber);
+
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals("Erro: " + errorMessage, response.getBody());
     }
 
     @Test
@@ -156,6 +168,7 @@ class OrderControllerTest {
     }
 
     @Test
+    @Transactional
     void deleteOrder_WithValidOrderNumber_ReturnsSuccessMessage() {
         doNothing().when(orderService).delete(validOrderNumber);
 
@@ -167,6 +180,7 @@ class OrderControllerTest {
     }
 
     @Test
+    @Transactional
     void deleteOrder_WithInvalidOrderNumber_ReturnsNotFound() {
         String errorMessage = "Pedido não encontrado";
         doThrow(new IllegalArgumentException(errorMessage)).when(orderService).delete(invalidOrderNumber);

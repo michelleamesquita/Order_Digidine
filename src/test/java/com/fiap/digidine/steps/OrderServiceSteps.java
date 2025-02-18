@@ -1,9 +1,9 @@
-package com.fiap.digidine.bdd.cucumber;
+package com.fiap.digidine.steps;
 
 import com.fiap.digidine.dto.OrderRequestDTO;
 import com.fiap.digidine.dto.OrderResponseDTO;
-import com.fiap.digidine.dto.ProductRequestDTO;
 import com.fiap.digidine.dto.CustomerRequestDTO;
+import com.fiap.digidine.dto.ProductRequestDTO;
 import com.fiap.digidine.dto.enums.ProductCategory;
 import com.fiap.digidine.model.Order;
 import com.fiap.digidine.model.enums.OrderStatus;
@@ -14,17 +14,16 @@ import io.cucumber.java.en.When;
 import io.cucumber.java.en.Then;
 import org.junit.jupiter.api.Assertions;
 import org.mockito.Mockito;
-import org.mockito.internal.matchers.Any;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.anyString;
 
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@Transactional
 public class OrderServiceSteps {
 
     @Autowired
@@ -62,19 +61,6 @@ public class OrderServiceSteps {
     public void theOrderShouldBeSavedInTheRepository() {
         Order savedOrder = orderRepository.findByOrderNumber(orderResponse.orderNumber());
         Assertions.assertNotNull(savedOrder);
-    }
-
-    @Given("an order with orderNumber {int} exists in the repository")
-    public void anOrderWithOrderNumberExistsInTheRepository(Long orderNumber) {
-        Order order = new Order();
-        order.setOrderNumber(orderNumber);
-        order.setStatus(OrderStatus.RECEBIDO);
-        orderRepository.save(order);
-    }
-
-    @When("the updateOrderStatusByOrderNumber method is called with status {string}")
-    public void theUpdateOrderStatusByOrderNumberMethodIsCalledWithStatus(String status) {
-        orderResponse = orderService.updateOrderStatusByOrderNumber(1L, OrderStatus.valueOf(status));
     }
 
     @Then("the order status should be updated in the repository")
@@ -123,9 +109,18 @@ public class OrderServiceSteps {
         Assertions.assertEquals(OrderStatus.PRONTO, orderList.getFirst().orderStatus());
     }
 
-    @When("the delete method is called with orderNumber {int}")
-    public void theDeleteMethodIsCalledWithOrderNumber(int orderNumber) {
-        orderService.delete((long) orderNumber);
+    @Given("an order with orderNumber exists in the repository")
+    public void anOrderWithOrderNumberExistsInTheRepository() {
+        Order order = new Order();
+        order.setOrderNumber(1L);
+        order.setOrderId(1L);
+        order.setStatus(OrderStatus.RECEBIDO);
+        orderRepository.save(order);
+    }
+
+    @When("the delete method is called with orderNumber")
+    public void theDeleteMethodIsCalledWithOrderNumber() {
+        orderService.delete(1L);
     }
 
     @Then("the order should be removed from the repository")

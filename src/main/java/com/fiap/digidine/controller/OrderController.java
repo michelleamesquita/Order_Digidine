@@ -1,11 +1,8 @@
 package com.fiap.digidine.controller;
 
 import com.fiap.digidine.dto.OrderRequestDTO;
-import com.fiap.digidine.dto.OrderResponseDTO;
-import com.fiap.digidine.model.enums.OrderStatus;
 import com.fiap.digidine.service.OrderService;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,8 +16,14 @@ import java.util.List;
 @CrossOrigin(origins = "*", maxAge = 3600)
 public class OrderController {
 
-    @Autowired
-    private OrderService orderService;
+    private final OrderService orderService;
+
+    private static final String ERROR = "Erro: ";
+
+    public OrderController(OrderService orderService)
+    {
+        this.orderService = orderService;
+    }
 
     @PostMapping
     public ResponseEntity<Object> create(@RequestBody OrderRequestDTO request) {
@@ -30,7 +33,7 @@ public class OrderController {
         }catch (IllegalArgumentException illegalArgumentException) {
             log.error("Error while creating order: {}", illegalArgumentException.getMessage(), illegalArgumentException);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Erro: " + illegalArgumentException.getMessage());
+                    .body(ERROR + illegalArgumentException.getMessage());
         }
     }
 
@@ -42,19 +45,7 @@ public class OrderController {
         }catch (IllegalArgumentException illegalArgumentException) {
             log.error("Error while updating order: {}", illegalArgumentException.getMessage(), illegalArgumentException);
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Erro: " + illegalArgumentException.getMessage());
-        }
-    }
-
-    @PatchMapping("/{orderNumber}")
-    public ResponseEntity<Object> updateOrderStatusByOrderNumber(@PathVariable long orderNumber, @RequestParam OrderStatus status) {
-        log.debug("Patch order received {}", orderNumber, status);
-        try{
-            return ResponseEntity.status(HttpStatus.OK).body(orderService.updateOrderStatusByOrderNumber(orderNumber, status));
-        }catch (IllegalArgumentException illegalArgumentException) {
-            log.error("Error while updating order status: {}", illegalArgumentException.getMessage(), illegalArgumentException);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Erro: " + illegalArgumentException.getMessage());
+                    .body(ERROR + illegalArgumentException.getMessage());
         }
     }
 
@@ -66,19 +57,19 @@ public class OrderController {
         }catch (IllegalArgumentException illegalArgumentException) {
             log.error("Error while listing order: {}", illegalArgumentException.getMessage(), illegalArgumentException);
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(Collections.singletonList("Erro: " + illegalArgumentException.getMessage()));
+                    .body(Collections.singletonList(ERROR + illegalArgumentException.getMessage()));
         }
     }
 
     @GetMapping("/{orderNumber}")
-    public ResponseEntity<Object> getOrderById(@PathVariable long orderNumber) {
+    public ResponseEntity<Object> getOrderByOrderNumber(@PathVariable long orderNumber) {
         log.debug("GET order received {}", orderNumber);
         try{
             return ResponseEntity.status(HttpStatus.OK).body(orderService.getByOrderNumber(orderNumber));
         }catch (IllegalArgumentException illegalArgumentException) {
             log.error("Error while getting order: {}", illegalArgumentException.getMessage(), illegalArgumentException);
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Erro: " + illegalArgumentException.getMessage());
+                    .body(ERROR + illegalArgumentException.getMessage());
         }
     }
 
@@ -90,7 +81,7 @@ public class OrderController {
         }catch (IllegalArgumentException illegalArgumentException) {
             log.error("Error while getting order: {}", illegalArgumentException.getMessage(), illegalArgumentException);
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Erro: " + illegalArgumentException.getMessage());
+                    .body(ERROR + illegalArgumentException.getMessage());
         }
     }
 
@@ -103,7 +94,7 @@ public class OrderController {
         }catch (IllegalArgumentException illegalArgumentException) {
             log.error("Error while deleting order: {}", illegalArgumentException.getMessage(), illegalArgumentException);
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body("Erro: " + illegalArgumentException.getMessage());
+                    .body(ERROR + illegalArgumentException.getMessage());
         }
     }
 }

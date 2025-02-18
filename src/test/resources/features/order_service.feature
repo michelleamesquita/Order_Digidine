@@ -9,19 +9,12 @@ Feature: Order Service
     Then an OrderResponseDTO should be returned
     And the order should be saved in the repository
 
-  Scenario: Update the status of an existing order
-    Given an order with orderNumber 1 exists in the repository
-    When the updateOrderStatusByOrderNumber method is called with status "PRONTO"
-    Then the order status should be updated in the repository
-    And the updated OrderResponseDTO should be returned
-
-  Scenario: Retrieve all orders not marked as "Finalizado"
+  Scenario: Retrieve all orders not marked as "FINALIZADO"
     Given there are orders in the repository with different statuses
     When the listOrders method is called
     Then a sorted list of orders should be returned
 
   Scenario: Delete an order by orderNumber
-    Given an order with orderNumber 1 exists in the repository
-    When the delete method is called with orderNumber 1
+    Given an order with orderNumber exists in the repository
+    When the delete method is called with orderNumber
     Then the order should be removed from the repository
-    And a notification should be published

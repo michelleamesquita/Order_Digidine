@@ -10,7 +10,6 @@ import java.util.Optional;
 public interface OrderService {
 
     OrderResponseDTO createOrder(OrderRequestDTO orderRequestDTO);
-    OrderResponseDTO updateOrderStatusByOrderNumber(long orderNumber, OrderStatus status);
     OrderResponseDTO updateOrderByOrderNumber(long orderNumber, OrderRequestDTO orderRequestDTO);
     List<OrderResponseDTO> listOrders();
     String getOrderStatus(long orderNumber);
