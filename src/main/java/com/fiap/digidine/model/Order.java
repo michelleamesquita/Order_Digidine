@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.mapping.MongoId;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter
@@ -20,7 +19,7 @@ import java.util.UUID;
 public class Order {
 
     @MongoId
-    private UUID orderUUID;
+    private Long orderId;
     private Long orderNumber;
     private CustomerRequestDTO customer;
     private List<ProductRequestDTO> products;

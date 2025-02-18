@@ -27,7 +27,7 @@ class OrderMapperTest {
         mapper = new OrderMapper();
 
         order = new Order();
-        order.setOrderUUID(UUID.randomUUID());
+        order.setOrderId(1L);
         order.setOrderNumber(12345L);
         order.setCustomer(new CustomerRequestDTO(1L, "Cliente Teste"));
         order.setProducts(List.of(

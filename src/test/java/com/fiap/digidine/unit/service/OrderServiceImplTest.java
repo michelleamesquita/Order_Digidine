@@ -14,7 +14,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -76,27 +75,6 @@ class OrderServiceImplTest {
     }
 
     @Test
-    void updateOrderStatus_ShouldUpdateStatusWhenOrderExists() {
-        when(orderRepository.findByOrderNumber(1L)).thenReturn(order);
-        when(orderRepository.save(any())).thenReturn(order);
-        when(mapper.toOrderResponse(any())).thenReturn(responseDTO);
-
-        OrderResponseDTO result = orderService.updateOrderStatusByOrderNumber(1L, OrderStatus.EM_PREPARACAO);
-
-        assertEquals("RECEBIDO", result.orderStatus());
-        verify(notificationPublisher).publishNotificationCommand(any());
-    }
-
-    @Test
-    void updateOrderStatus_ShouldThrowExceptionWhenOrderNotFound() {
-        when(orderRepository.findByOrderNumber(999L)).thenReturn(null);
-
-        assertThrows(IllegalArgumentException.class, () ->
-                orderService.updateOrderStatusByOrderNumber(999L, OrderStatus.EM_PREPARACAO)
-        );
-    }
-
-    @Test
     void updateOrder_ShouldRecalculateTotalPrice() {
         List<ProductRequestDTO> newProducts = List.of(
                 new ProductRequestDTO(2L, "Novo Produto", 15.0, ProductCategory.BEBIDA)
@@ -146,7 +124,7 @@ class OrderServiceImplTest {
 
         orderService.delete(1L);
 
-        verify(orderRepository).deleteById(order.getOrderUUID());
+        verify(orderRepository).deleteById(order.getOrderId());
         verify(notificationPublisher).publishNotificationCommand(any());
     }
 
@@ -161,10 +139,10 @@ class OrderServiceImplTest {
     }
 
     private Order createTestOrder(Long number, OrderStatus status) {
-        Order order = new Order();
-        order.setOrderNumber(number);
-        order.setStatus(status);
-        order.setCreatedAt(LocalDateTime.now());
-        return order;
+        Order pedido = new Order();
+        pedido.setOrderNumber(number);
+        pedido.setStatus(status);
+        pedido.setCreatedAt(LocalDateTime.now());
+        return pedido;
     }
 }

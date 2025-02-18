@@ -39,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
 
         Order savedOrder = orderRepository.save(baseOrder);
 
-        if(savedOrder != null) {
+        if (savedOrder != null) {
             try {
                 notificationPublisher.publishNotificationCommand(new NotificationDTO(
                         "Order created: " + savedOrder.getOrderNumber(),
@@ -51,32 +51,6 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return mapper.toOrderResponse(savedOrder);
-    }
-
-    @Transactional
-    @Override
-    public OrderResponseDTO updateOrderStatusByOrderNumber(long orderNumber, OrderStatus status) {
-        Order order = orderRepository.findByOrderNumber(orderNumber);
-
-        if (order == null) {
-            throw new IllegalArgumentException("Pedido não cadastrado anteriormente!");
-        }
-
-        order.setStatus(status);
-
-        orderRepository.save(order);
-
-        if (order != null) {
-            try {
-                notificationPublisher.publishNotificationCommand(new NotificationDTO(
-                        "Order updated: " + order.getOrderNumber(),
-                        HttpStatus.OK,
-                        mapper.toOrderResponse(order)));
-            } catch (Exception e) {
-                log.warn("Error sending notification!");
-            }
-        }
-        return mapper.toOrderResponse(order);
     }
 
     @Transactional
@@ -152,7 +126,7 @@ public class OrderServiceImpl implements OrderService {
             throw new IllegalArgumentException("Pedido não cadastrado anteriormente!");
         }
 
-        orderRepository.deleteById(order.getOrderUUID());
+        orderRepository.deleteById(order.getOrderId());
 
         try {
             notificationPublisher.publishNotificationCommand(new NotificationDTO(
@@ -190,8 +164,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private Order buildOrderFromRequest (OrderRequestDTO orderRequestDTO){
+        Random random = new Random();
+
         Order order = new Order();
-        order.setOrderUUID(java.util.UUID.randomUUID());
+        order.setOrderId(random.nextLong());
         order.setStatus(OrderStatus.RECEBIDO);
         order.setCreatedAt(LocalDateTime.now());
         order.setOrderNumber(getNextOrderNumber());
