@@ -41,9 +41,9 @@ jobs:
       run: |
           STATUS=$(curl -s -u $SONAR_TOKEN: "https://sonarcloud.io/api/qualitygates/project_status?projectKey=michelleamesquita_Order_Digidine" \
             | jq -r '.projectStatus.status')
-          if [ "$STATUS" != "OK" ]; then
+          if [ "$STATUS" == "OK" ]; then
             echo "SonarCloud Quality Gate failed!"
-            # exit 1
+            exit 1
           fi
       
     
