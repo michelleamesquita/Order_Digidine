@@ -8,9 +8,11 @@ services:
     ports:
       - '27017'
   rabbitmq:
-    image: 'rabbitmq:latest'
+    image: rabbitmq:management
+    container_name: rabbitmq
     environment:
       - 'RABBITMQ_DEFAULT_PASS=secret'
       - 'RABBITMQ_DEFAULT_USER=myuser'
     ports:
-      - '5672'
+      - "5672:5672"
+      - "15672:15672"  # Mapeia a porta da interface de gerenciamento
