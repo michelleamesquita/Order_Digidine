@@ -20,7 +20,11 @@ digidine:
   broker:
     exchange:
       orderNotificationExchange: digidine.order.notification
+      productionNotificationExchange: digidine.order-production.notification
     key:
       orderNotificationKey: ms.order.notification
-    queue: digidine.order.notification.queue
+      productionNotificationKey: ms.order-production.notification
+    queue:
+      order: digidine.order.notification.queue
+      payment: digidine.payment.notification.queue
 
