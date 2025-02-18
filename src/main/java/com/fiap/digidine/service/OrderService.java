@@ -15,4 +15,5 @@ public interface OrderService {
     String getOrderStatus(long orderNumber);
     void delete(Long orderNumber);
     OrderResponseDTO getByOrderNumber(Long orderNumber);
+    OrderResponseDTO processOrder(long orderNumber);
 }

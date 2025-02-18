@@ -19,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import static com.fiap.digidine.model.enums.OrderStatus.EM_PREPARACAO;
+
 @Service
 @Log4j2
 public class OrderServiceImpl implements OrderService {
@@ -146,6 +148,32 @@ public class OrderServiceImpl implements OrderService {
             throw new IllegalArgumentException("Pedido não cadastrado anteriormente!");
         }
 
+        return mapper.toOrderResponse(order);
+    }
+
+    @Override
+    public OrderResponseDTO processOrder(long orderNumber) {
+        Order order = orderRepository.findByOrderNumber(orderNumber);
+
+        if (order == null) {
+            throw new IllegalArgumentException("Pedido não cadastrado anteriormente!");
+        }
+
+        order.setStatus(EM_PREPARACAO);
+
+        orderRepository.save(order);
+
+        if(order != null) {
+            try {
+                notificationPublisher.publishNotificationCommand(new NotificationDTO(
+                        "Order updated: " + order.getOrderNumber(),
+                        HttpStatus.OK,
+                        mapper.toOrderResponse(order)));
+            }
+            catch (Exception e) {
+                log.warn("Error sending notification!");
+            }
+        }
         return mapper.toOrderResponse(order);
     }
 
