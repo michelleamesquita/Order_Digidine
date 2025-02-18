@@ -16,4 +16,5 @@ public interface OrderService {
     void delete(Long orderNumber);
     OrderResponseDTO getByOrderNumber(Long orderNumber);
     OrderResponseDTO processOrder(long orderNumber);
+    OrderResponseDTO updateOrderByOrderNumber ( long orderNumber, OrderResponseDTO orderResponseDTO);
 }
