@@ -19,20 +19,20 @@ public class OrderUpdateListener {
 
     OrderMapper orderMapper;
 
-    @RabbitListener(queues = "${digidine.broker.queue.orderUpdate}")
-    public void receiveOrderUpdate(OrderDTO orderDTO) {
-
-        OrderResponseDTO order = orderService.getByOrderNumber(orderDTO.orderNumber());
-
-        OrderResponseDTO orderUpdate = new OrderResponseDTO(
-                order.orderNumber(),
-                order.customer(),
-                order.products(),
-                order.totalPrice(),
-                orderDTO.orderStatus(),
-                order.createdAt()
-        );
-
-        orderService.updateOrderByOrderNumber(orderDTO.orderNumber(), orderUpdate);
-    }
+//    @RabbitListener(queues = "${digidine.broker.queue.orderUpdate}")
+//    public void receiveOrderUpdate(OrderDTO orderDTO) {
+//
+//        OrderResponseDTO order = orderService.getByOrderNumber(orderDTO.orderNumber());
+//
+//        OrderResponseDTO orderUpdate = new OrderResponseDTO(
+//                order.orderNumber(),
+//                order.customer(),
+//                order.products(),
+//                order.totalPrice(),
+//                orderDTO.orderStatus(),
+//                order.createdAt()
+//        );
+//
+//        orderService.updateOrderByOrderNumber(orderDTO.orderNumber(), orderUpdate);
+//    }
 }

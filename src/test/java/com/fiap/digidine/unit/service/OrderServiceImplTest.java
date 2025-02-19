@@ -57,7 +57,7 @@ class OrderServiceImplTest {
                 new CustomerRequestDTO(1L, "Cliente"),
                 List.of(new ProductRequestDTO(1L, "Produto", 10.0, ProductCategory.LANCHE)),
                 10.0,
-                "RECEBIDO",
+                OrderStatus.RECEBIDO,
                 LocalDateTime.now()
         );
     }

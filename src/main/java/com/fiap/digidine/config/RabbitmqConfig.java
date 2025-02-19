@@ -17,20 +17,17 @@ public class RabbitmqConfig {
     @Autowired
     private CachingConnectionFactory cachingConnectionFactory;
 
-    @Value(value = "${digidine.broker.queue}")
+    @Value(value = "${digidine.broker.queue.order}")
     private String orderNotificationQueue;
 
     @Value(value = "${digidine.broker.key.orderNotificationKey}")
     private String orderNotificationKey;
 
-    @Value("${digidine.broker.exchange.orderUpdateExchange}")
-    private String orderUpdateExchangeName;
+    @Value(value = "${digidine.broker.queue.production}")
+    private String orderProductionNotificationQueue;
 
-    @Value("${digidine.broker.queue.orderUpdate}")
-    private String orderUpdateQueueName;
-
-    @Value("${digidine.broker.key.orderUpdateKey}")
-    private String orderUpdateKey;
+    @Value(value = "${digidine.broker.key.orderProductionNotificationKey}")
+    private String orderProductionNotificationKey;
 
     @Bean
     public RabbitTemplate rabbitTemplate() {
@@ -66,19 +63,22 @@ public class RabbitmqConfig {
     }
 
     @Bean
-    public TopicExchange orderUpdateExchange() {
-        return new TopicExchange(orderUpdateExchangeName);
+    public TopicExchange orderProductionNotificationExchange() {
+        return new TopicExchange("digidine.order-production.notification");
     }
 
+    // Declara a fila
     @Bean
-    public Queue orderUpdateQueue() {
-        return new Queue(orderUpdateQueueName, true);
+    public Queue orderProductionNotificationQueue() {
+        return new Queue(orderProductionNotificationQueue, true);
     }
 
+    // Declara o binding entre a exchange e a fila com a routing key
     @Bean
-    public Binding orderUpdateBinding() {
-        return BindingBuilder.bind(orderUpdateQueue())
-                .to(orderUpdateExchange())
-                .with(orderUpdateKey);
+    public Binding bindingOrderProduction() {
+        return BindingBuilder.bind(orderNotificationQueue())
+                .to(orderNotificationExchange())
+                .with(orderProductionNotificationKey);
     }
+
 }

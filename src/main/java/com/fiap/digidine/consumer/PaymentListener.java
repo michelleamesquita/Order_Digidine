@@ -13,28 +13,28 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PaymentListener {
-    @Autowired
-    RabbitTemplate rabbitTemplate;
-
-    @Autowired
-    OrderService orderService;
-
-    OrderMapper orderMapper;
-
-    @Value(value = "${digidine.broker.exchange.productionNotificationExchange}")
-    public String productionNotificationExchange;
-
-    @Value(value = "${digidine.broker.key.productionNotificationKey}")
-    public String productionNotificationKey;
-
-    @RabbitListener(queues = "${digidine.broker.queue.payment}")
-    public void receiveOrder(PaymentRequestDTO paymentRequest) {
-        // Processa o pagamento
-        OrderResponseDTO orderResponseDTO = orderService.processOrder(
-                paymentRequest.orderNumber());
-
-        // Publica a mensagem na fila de pedidos
-        rabbitTemplate.convertAndSend(productionNotificationExchange, productionNotificationKey, orderResponseDTO);
-    }
+//    @Autowired
+//    RabbitTemplate rabbitTemplate;
+//
+//    @Autowired
+//    OrderService orderService;
+//
+//    OrderMapper orderMapper;
+//
+//    @Value(value = "${digidine.broker.exchange.productionNotificationExchange}")
+//    public String productionNotificationExchange;
+//
+//    @Value(value = "${digidine.broker.key.productionNotificationKey}")
+//    public String productionNotificationKey;
+//
+//    @RabbitListener(queues = "${digidine.broker.queue.payment}")
+//    public void receiveOrder(PaymentRequestDTO paymentRequest) {
+//        // Processa o pagamento
+//        OrderResponseDTO orderResponseDTO = orderService.processOrder(
+//                paymentRequest.orderNumber());
+//
+//        // Publica a mensagem na fila de pedidos
+//        rabbitTemplate.convertAndSend(productionNotificationExchange, productionNotificationKey, orderResponseDTO);
+//    }
 }
 

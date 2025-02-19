@@ -18,7 +18,7 @@ public class OrderMapper {
                 order.getCustomer(),
                 order.getProducts(),
                 order.getTotalPrice(),
-                order.getStatus().toString(),
+                order.getStatus(),
                 order.getCreatedAt());
     }
 
@@ -32,7 +32,7 @@ public class OrderMapper {
                     order.getCustomer(),
                     order.getProducts(),
                     order.getTotalPrice(),
-                    order.getStatus().toString(),
+                    order.getStatus(),
                     order.getCreatedAt());
 
             ordersResponseDTO.add(orderResponseDTO);
