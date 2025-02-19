@@ -17,11 +17,21 @@ public class RabbitmqConfig {
     @Autowired
     private CachingConnectionFactory cachingConnectionFactory;
 
-    @Value(value = "${digidine.broker.queue}")
+    @Value(value = "${digidine.broker.queue.order}")
     private String orderNotificationQueue;
 
     @Value(value = "${digidine.broker.key.orderNotificationKey}")
     private String orderNotificationKey;
+
+    @Value(value = "${digidine.broker.queue.production}")
+    private String orderProductionNotificationQueue;
+
+    @Value(value = "${digidine.broker.key.orderProductionNotificationKey}")
+    private String orderProductionNotificationKey;
+
+
+
+
 
     @Value("${digidine.broker.exchange.orderUpdateExchange}")
     private String orderUpdateExchangeName;
@@ -66,19 +76,42 @@ public class RabbitmqConfig {
     }
 
     @Bean
-    public TopicExchange orderUpdateExchange() {
-        return new TopicExchange(orderUpdateExchangeName);
+    public TopicExchange orderProductionNotificationExchange() {
+        return new TopicExchange("digidine.order-production.notification");
     }
 
+    // Declara a fila
     @Bean
-    public Queue orderUpdateQueue() {
-        return new Queue(orderUpdateQueueName, true);
+    public Queue orderProductionNotificationQueue() {
+        return new Queue(orderProductionNotificationQueue, true);
     }
 
+    // Declara o binding entre a exchange e a fila com a routing key
     @Bean
-    public Binding orderUpdateBinding() {
-        return BindingBuilder.bind(orderUpdateQueue())
-                .to(orderUpdateExchange())
-                .with(orderUpdateKey);
+    public Binding bindingOrderProduction() {
+        return BindingBuilder.bind(orderNotificationQueue())
+                .to(orderNotificationExchange())
+                .with(orderProductionNotificationKey);
     }
+
+
+
+
+
+//    @Bean
+//    public TopicExchange orderUpdateExchange() {
+//        return new TopicExchange(orderUpdateExchangeName);
+//    }
+//
+//    @Bean
+//    public Queue orderUpdateQueue() {
+//        return new Queue(orderUpdateQueueName, true);
+//    }
+//
+//    @Bean
+//    public Binding orderUpdateBinding() {
+//        return BindingBuilder.bind(orderUpdateQueue())
+//                .to(orderUpdateExchange())
+//                .with(orderUpdateKey);
+//    }
 }

@@ -15,7 +15,7 @@ spring:
 #    port: 5672
 #    username: myuser
 #    password: secret
-#
+
 digidine:
   broker:
     exchange:
@@ -23,8 +23,10 @@ digidine:
       productionNotificationExchange: digidine.order-production.notification
     key:
       orderNotificationKey: ms.order.notification
-      productionNotificationKey: ms.order-production.notification
+      orderProductionNotificationKey: ms.order-production.notification
     queue:
       order: digidine.order.notification.queue
       payment: digidine.payment.notification.queue
+      production: digidine.production.notification.queue
+
 
