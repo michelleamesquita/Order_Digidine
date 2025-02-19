@@ -6,6 +6,7 @@ import com.fiap.digidine.dto.OrderRequestDTO;
 import com.fiap.digidine.dto.OrderResponseDTO;
 import com.fiap.digidine.dto.ProductRequestDTO;
 import com.fiap.digidine.dto.enums.ProductCategory;
+import com.fiap.digidine.model.enums.OrderStatus;
 import com.fiap.digidine.service.OrderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -61,7 +62,7 @@ class OrderControllerTest {
                 customerRequest,
                 List.of(productRequest),
                 10.99,
-                "EM_PREPARACAO",
+                OrderStatus.EM_PREPARACAO,
                 LocalDateTime.now()
         );
     }

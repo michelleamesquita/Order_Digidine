@@ -2,6 +2,7 @@ package com.fiap.digidine.integration.producer;
 
 import com.fiap.digidine.dto.*;
 import com.fiap.digidine.dto.enums.ProductCategory;
+import com.fiap.digidine.model.enums.OrderStatus;
 import com.fiap.digidine.producer.NotificationPublisher;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,7 +49,7 @@ class NotificationPublisherTest {
                 customerRequest,
                 List.of(productRequest),
                 10.99,
-                "EM_PREPARACAO",
+                OrderStatus.EM_PREPARACAO,
                 LocalDateTime.now()
         );
     }

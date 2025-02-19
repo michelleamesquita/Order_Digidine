@@ -29,19 +29,6 @@ public class RabbitmqConfig {
     @Value(value = "${digidine.broker.key.orderProductionNotificationKey}")
     private String orderProductionNotificationKey;
 
-
-
-
-
-    @Value("${digidine.broker.exchange.orderUpdateExchange}")
-    private String orderUpdateExchangeName;
-
-    @Value("${digidine.broker.queue.orderUpdate}")
-    private String orderUpdateQueueName;
-
-    @Value("${digidine.broker.key.orderUpdateKey}")
-    private String orderUpdateKey;
-
     @Bean
     public RabbitTemplate rabbitTemplate() {
         RabbitTemplate template = new RabbitTemplate(cachingConnectionFactory);
@@ -94,24 +81,4 @@ public class RabbitmqConfig {
                 .with(orderProductionNotificationKey);
     }
 
-
-
-
-
-//    @Bean
-//    public TopicExchange orderUpdateExchange() {
-//        return new TopicExchange(orderUpdateExchangeName);
-//    }
-//
-//    @Bean
-//    public Queue orderUpdateQueue() {
-//        return new Queue(orderUpdateQueueName, true);
-//    }
-//
-//    @Bean
-//    public Binding orderUpdateBinding() {
-//        return BindingBuilder.bind(orderUpdateQueue())
-//                .to(orderUpdateExchange())
-//                .with(orderUpdateKey);
-//    }
 }
