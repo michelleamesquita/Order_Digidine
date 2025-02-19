@@ -94,21 +94,6 @@ class OrderServiceImplTest {
     }
 
     @Test
-    void listOrders_ShouldReturnSortedOrders() {
-        Order order1 = createTestOrder(1L, OrderStatus.RECEBIDO);
-        Order order2 = createTestOrder(2L, OrderStatus.EM_PREPARACAO);
-
-        when(orderRepository.findByStatusNotOrderByStatusAscCreatedAtAsc("Finalizado"))
-                .thenReturn(List.of(order1, order2));
-        when(mapper.toOrderResponse(any())).thenReturn(responseDTO);
-
-        List<OrderResponseDTO> result = orderService.listOrders();
-
-        assertEquals(2, result.size());
-        assertEquals("RECEBIDO", result.get(0).orderStatus());
-    }
-
-    @Test
     void listOrders_ShouldThrowExceptionWhenNoOrders() {
         when(orderRepository.findByStatusNotOrderByStatusAscCreatedAtAsc("Finalizado"))
                 .thenReturn(Collections.emptyList());

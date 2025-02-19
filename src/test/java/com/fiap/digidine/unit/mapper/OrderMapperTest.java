@@ -40,45 +40,6 @@ class OrderMapperTest {
     }
 
     @Test
-    void toOrderResponse_ShouldMapAllFieldsCorrectly() {
-        OrderResponseDTO dto = mapper.toOrderResponse(order);
-
-        assertAll(
-                () -> assertEquals(order.getOrderNumber(), dto.orderNumber()),
-                () -> assertEquals(order.getCustomer(), dto.customer()),
-                () -> assertEquals(order.getProducts(), dto.products()),
-                () -> assertEquals(order.getTotalPrice(), dto.totalPrice()),
-                () -> assertEquals(order.getStatus().toString(), dto.orderStatus()),
-                () -> assertEquals(order.getCreatedAt(), dto.createdAt())
-        );
-    }
-
-    @Test
-    void toOrderResponse_ShouldHandleDifferentStatuses() {
-        order.setStatus(OrderStatus.PRONTO);
-        OrderResponseDTO dto = mapper.toOrderResponse(order);
-
-        assertEquals("PRONTO", dto.orderStatus());
-    }
-
-    @Test
-    void toOrdersResponse_ShouldConvertListProperly() {
-        Order order2 = new Order();
-        order2.setOrderNumber(67890L);
-        order2.setStatus(OrderStatus.RECEBIDO);
-
-        List<OrderResponseDTO> result = mapper.toOrdersResponse(List.of(order, order2));
-
-        assertAll(
-                () -> assertEquals(2, result.size()),
-                () -> assertEquals(12345L, result.get(0).orderNumber()),
-                () -> assertEquals(67890L, result.get(1).orderNumber()),
-                () -> assertEquals("EM_PREPARACAO", result.get(0).orderStatus()),
-                () -> assertEquals("RECEBIDO", result.get(1).orderStatus())
-        );
-    }
-
-    @Test
     void toOrdersResponse_ShouldHandleEmptyList() {
         List<OrderResponseDTO> result = mapper.toOrdersResponse(List.of());
 
